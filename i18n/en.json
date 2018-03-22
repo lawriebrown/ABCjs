@@ -1,0 +1,7 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"abcjs-desc": "Provide support for rendering abc music notation on mediawiki pages using the abcjs javascipt package, and for setting tune related categories when editing pages.",
+	"abcjs-i18n-welcome": "Welcome to the localization file of the ABCjs extension."
+}

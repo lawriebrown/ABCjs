@@ -1,0 +1,234 @@
+<html>
+<head>
+<title>Extension:ABCjs</title>
+</head>
+<body>
+
+<h1>Extension:ABCjs</h1>
+
+<table class="tpl-infobox ext-infobox ext-status-beta" style="float:right; clear:right; margin:0 0 0.5em 0.5em" cellspacing="0" border>
+<tr class="tpl-infobox-header ext-infobox-header" style="text-align:left">
+<th colspan="2" style="padding-top: 0.5em;">
+<span style="font-size: 130%;">ABCjs</span><br />
+<p>Release status: beta</p>
+</th>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>Implementation</b></td>
+<td>Page action, Edit page</td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>Description</b></td>
+<td>provide support for rendering abc music notation on mediawiki pages<br/>
+using the abcjs javascipt package, and for setting tune related categories<br/>
+when editing pages.</td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>Author(s)</b></td>
+<td><a href="http://lpb.canb.auug.org.au/">Lawrie Brown</a></td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>Latest Version</b></td>
+<td>1.0</td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>License</b></td>
+<td><a href="http://creativecommons.org/licenses/by-nc-sa/3.0/">
+CC By NC SA</a></td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>MediaWiki</b></td>
+<td>tested on 1.29+</td>
+</tr>
+<tr>
+<td style="vertical-align: top"><b>Download</b></td>
+<td><a href="http://bushtraditions.wiki/tunes/extensions/ABCjs.zip">http://bushtraditions.wiki/tunes/extensions/ABCjs.zip</a></td>
+</tr>
+</table>
+
+<p>
+The <b>ABCjs</b> extension provides support for rendering abc music
+notation on mediawiki pages using Paul Rosen and Gregory Dyke's
+<a href="http://abcjs.net/">abcjs javascipt package</a>, and for
+setting tune related categories when editing pages.
+
+<p>
+This extension is likely used along with the 
+<a href="http://bushtraditions.wiki/tunes/extensions/abcExport/">
+abcExport extension</a> that supports exporting content from pages
+containing abc music notation as an abc notation file or as a pdf of
+the rendered score.
+
+<div id="toc" class="toc">
+<h2>Contents</h2>
+<ul>
+<li><a href="#Installation">Installation</a></li>
+<li><a href="#Configuration">Configuration</a></li>
+<li><a href="#Usage">Usage</a></li>
+<li><a href="#Technical_Details">Technical Details</a></li>
+<li><a href="#See_also">See also</a></li>
+<li><a href="#Acknowledgements">Acknowledgements</a></li>
+</ul>
+</div>
+
+<h2><span id="Installation">Installation</h2>
+<hr>
+<p>
+Installation of <b>ABCjs</b> requires installing the extension code
+and the supporting abcjs javascipt package into your wiki.
+
+<p>
+<ul>
+<li> <a href="../ABCjs.zip">Download</a> and unzip the extension code so
+the files are saved in a directory called <code>ABCjs</code> in your
+<code>extensions/</code> folder.
+<li> Download the latest <code>abcjs_basic</code>
+(or <code>abcjs_midi</code>) and
+<code>abcjs_plugin</code> javascript files from
+<a href="http://abcjs.net/">abcjs (where)</a> into your
+<code>extensions/</code> folder.
+<li> Edit the <a href="sandbox.html">sandbox.html</a> file to
+reference the <code>abcjs_basic/abcjs_midi</code> file you have.
+<li> Add the following code at the bottom of your
+<code>LocalSettings.php</code>:
+<pre>
+wfLoadExtension('ABCjs');
+</pre>
+<li> <a href="#Configuration">Configure</a> as required.
+In particular, ensure <code>$wgABCjs_plugin</code> refers to the
+<code>abcjs_plugin</code> javascript file you downloaded.
+<li> Navigate to Special:Version on your wiki to verify that the extension
+is successfully installed.
+</ul>
+
+<h2><span id="Configuration">Configuration</span></h2>
+<hr>
+<p>
+You can then redefine any of the following globals after the wfLoadExtension
+statement in your <code>LocalSettings.php</code>:
+<dl>
+<dt> <b>$wgABCjs_plugin</b> 
+<dd> name of abcjs plugin file (in this extension dir) to use, eg.
+<pre>
+$wgABCjs_plugin = "$wgScriptPath/extensions/ABCjs/abcjs_plugin_3.3.2-min.js";
+</pre>
+<dt> <b>$wgABCjs_abcTag</b> 
+<dd> string marking the start of some abc notation in a wiki page.
+Default <code>&lt;pre id=abc&gt;</code>
+<dt> <b>$wgABCjs_abcTagEnd</b> 
+<dd> string marking the end of some abc notation in a wiki page.
+Default <code>&lt;/pre&gt;</code>
+<dt> <b>$wgABCjs_abcCat</b> 
+<dd> Category tag used to indicate that abc notation is used on this page,
+and that additional key, meter & rhythm category tags should be added or
+updated after it.
+Default <code>Tune</code>
+<dt> <b>$wgABCjs_abcHide</b> 
+<dd> Namespace where abc notation hidden, just score shows.
+Default <code>Set</code>
+<dt> <b>$wgABCjs_abcMax</b> 
+<dd> max count of abc tunes to render when notation hidden.
+Default <code>100</code>
+<dt> <b>$wgABCjs_debug</b> 
+<dd> set true for debug diagnostic display when running.
+Default <code>false</code>
+<dt> <b>$wgABCjs_UserDebug</b> 
+<dd> set true for abcjs debug diagnostic on User pages.
+Default <code>false</code>
+</dl>
+
+<p>
+See <code>ABCjs/extension.json</code> in your <code>extensions/</code> folder
+for the default values of these variables.
+
+<h2><span id="Usage">Usage</span></h2>
+<hr>
+
+<p>
+Once installed, the extension operates automatically whenever pages are
+displayed or edited.
+
+<p>
+More specifically, the inclusion of the <code>abcjs_plugin</code> used
+to render abc music notation on the page as a score occurs when any
+page, other than '''Special''' pages, is displayed.
+
+<p>
+The edit checks occur whenever pages in the <code>(Main)</code> and
+<code>User</code> namespaces are edited, which is where tune content
+that should be rendered is assumed to be located. These scan for any abc
+notation content surrounded by <code>$wgABCjs_abcTag</code>
+(<code>&lt;pre id=abc&gt;</code>) and <code>$wgABCjs_abcTagEnd</code>
+(<code>&lt;/pre&gt;</code>) tags on pages in category
+<code>$wgABCjs_abcCat</code> (<code>Tune</code>). It locates any
+key, meter and rhythm abc tags, and generates suitable mediawiki
+category tags for each of these, placing them after the existing
+<code>$wgABCjs_abcCat</code> category tag.
+
+<p>
+You may wish to provide a template for tune pages that includes these
+details. Such a template could be provided to page edits by the
+<a href="https://www.mediawiki.org/wiki/Extension:MultiBoilerplate">
+MultiBoilerplate extension</a> for example. The template may look like:
+
+<hr>
+<pre>
+&lt;pre id=abc&gt;
+
+T:title of tune
+M:meter
+L:note length
+R:rhythm (use multiple R: tags for multiple suggested rhythms)
+K:key
+|"D"D D A A|"G"B B "D"A2
+&lt;/pre&gt;
+
+&lt;!-- Additional notes and comments, links to related material, e.g. recordings, info on tune, collector etc can be included below this line using standard wikitext markup. --&gt;
+
+&lt;!-- Please DO NOT CHANGE any of the following lines. The category tags will be automatically created/updated when you save the page. --&gt;
+[[Category:Tune]]
+
+</pre>
+<hr>
+
+<p>
+This extension also includes a basic HTML 
+<a href="sandbox.html">ABC sandbox</a> page (using the basic (editor)
+abcjs module) that lets you enter abc notation and view the
+rendered result immediately. You can link to this file from inside
+the wiki using code like:
+<pre>
+See the [{{SERVER}}{{SCRIPTPATH}}/extensions/ABCjs/sandbox.html ABC sandbox]
+</pre>
+
+<h2><span id="Technical_Details">Technical Details</span></h2>
+<hr>
+
+<p>
+This extension adds a
+<a href="https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay">
+BeforePageDisplay()</a> hook to include and configure the
+<a href="http://abcjs.net/">abcjs javascipt package</a>, that renders
+abc music notation as a score, on all pages that match the required
+content criteria (see extension comments for details). Management
+of the Tune classification tags is assisted by adding
+<a href="https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::attemptSave">
+EditPage::attemptSave</a> hook that scans the abc notation of a tune
+page being saved, and automatically adds/updates the required Key,
+Meter and Rhythm Category tags at the end of the page.
+
+<h2><span id="See_also">See also</span></h2>
+<hr>
+
+<ul>
+<li> <a href="http://bushtraditions.wiki/tunes/extensions/abcExport/">
+abcExport extension</a>
+</ul>
+
+<h3><span id="Acknowledgements">Acknowledgements</span></h3>
+<p>
+Copyright &copy; 2018 <a href="http://lpb.canb.auug.org.au/">Lawrie Brown</a>
+
+</body>
+</html>
+

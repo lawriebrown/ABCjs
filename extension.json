@@ -1,0 +1,54 @@
+{
+	"name": "ABCjs",
+	"version": "1.0",
+	"author": [
+		"Lawrie Brown"
+	],
+	"url": "http://bushtraditions.wiki/tunes/extensions/ABCjs",
+	"descriptionmsg": "abcjs-desc",
+	"license-name": "CC By NC SA",
+	"type": "parserhook",
+	"AutoloadClasses": {
+		"ABCjsHooks": "ABCjs.hooks.php"
+	},
+	"config":  {
+		"ABCjs_plugin": "$wgScriptPath/extensions/ABCjs/abcjs_plugin_4.0.0-min.js",
+		"ABCjs_abcTag": "<pre id=abc>",
+		"ABCjs_abcTagEnd": "</pre>",
+		"ABCjs_abcCat": "Tune",
+		"ABCjs_abcHide": "Set",
+		"ABCjs_abcMax": 100,
+		"ABCjs_debug": false,
+		"ABCjs_UserDebug": false
+	},
+	"ExtensionMessagesFiles": {
+	},
+	"Hooks": {
+		"EditPage::attemptSave": [
+			"ABCjsHooks::onEditSave"
+		],
+		"BeforePageDisplay": [
+			"ABCjsHooks::onBeforePageDisplay"
+		]
+	},
+	"MessagesDirs": {
+		"ABCjs": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.ABCjs": {
+			"scripts": [],
+			"styles": [],
+			"messages": [],
+			"dependencies": []
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "ABCjs"
+	},
+	"SpecialPages": {
+	},
+	"manifest_version": 1
+}
